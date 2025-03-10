@@ -1,0 +1,97 @@
+#include <iostream>
+
+using namespace std;
+
+struct Node
+{
+    int data;
+    Node *next;
+};
+
+Node *createNode(int n)
+{
+    Node *newnode = new Node;
+    newnode->data = n;
+    newnode->next = NULL;
+    return newnode;
+}
+
+void insertAtEnd(int x, Node *&head)
+{
+    Node *newnode = createNode(x);
+    if (head == NULL)
+        head = newnode;
+    else
+    {
+        Node *p = head;
+        while (p->next != NULL)
+        {
+            p = p->next;
+        }
+        p->next = newnode;
+    }
+}
+
+void printList(Node *head)
+{
+    Node *temp = head;
+    while (temp != NULL)
+    {
+        cout << temp->data << " -> ";
+        temp = temp->next;
+    }
+    cout << "NULL" << endl;
+}
+
+void removeDuplicates(Node *&head)
+{
+    if (head == NULL)
+        return;
+
+    Node *current = head;
+    while (current != NULL)
+    {
+        Node *prev = current;
+        Node *temp = current->next;
+
+        while (temp != NULL)
+        {
+            if (temp->data == current->data)
+            {
+                prev->next = temp->next;
+                delete temp;
+                temp = prev->next;
+            }
+            else
+            {
+                prev = temp;
+                temp = temp->next;
+            }
+        }
+        current = current->next;
+    }
+}
+
+int main()
+{
+    Node *head = NULL;
+
+    insertAtEnd(1, head);
+    insertAtEnd(2, head);
+    insertAtEnd(2, head);
+    insertAtEnd(3, head);
+    insertAtEnd(4, head);
+    insertAtEnd(5, head);
+    insertAtEnd(5, head);
+    insertAtEnd(6, head);
+
+    cout << "Original Linked List: ";
+    printList(head);
+
+    removeDuplicates(head);
+
+    cout << "Linked List after removing duplicates: ";
+    printList(head);
+
+    return 0;
+}
